@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:27:14 by niragne           #+#    #+#             */
-/*   Updated: 2019/08/30 16:18:48 by niragne          ###   ########.fr       */
+/*   Updated: 2019/08/30 16:29:03 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 # define FT_SSL_MD65
 
 #include "libft.h"
+
+typedef struct	s_md5
+{
+	size_t	original_length;
+	size_t	formatted_length;
+	uint8_t	*message;
+}				t_md5;
 
 void	flag_s(t_arg_parser *parser, void *flags);
 void	flag_p(t_arg_parser *parser, void *flags);

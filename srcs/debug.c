@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 16:18:22 by niragne           #+#    #+#             */
-/*   Updated: 2019/08/30 16:18:37 by niragne          ###   ########.fr       */
+/*   Updated: 2019/08/30 16:50:03 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void	print_buff(uint8_t *s, size_t len)
 	i = 0;
 	while (i < len)
 	{
-		if (!(i % 8))
+		if (!(i % 8) && i)
+			ft_printf("\n");
+		if (!(i % 64) && i)
 			ft_printf("\n");
 		ft_printf("%08b ", s[i]);
 		i++;
