@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 13:00:44 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/01 14:20:35 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/01 15:40:41 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	process_md5(char *s, t_ssl_wrapper *wrapper)
 	{
 		tmp = (uint32_t*)(m.message + (j * 64));
 		//ft_printf("Block number %d:\n", j);
-		//print_buff((uint8_t*)tmp, 64);
+		print_buff((uint8_t*)tmp, 64);
 		a = h0;
 		b = h1;
 		c = h2;
