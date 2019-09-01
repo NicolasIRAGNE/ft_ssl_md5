@@ -6,7 +6,7 @@
 #    By: niragne <niragne@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/18 12:01:42 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/30 16:20:41 by niragne          ###   ########.fr        #
+#    Updated: 2019/09/01 14:25:09 by niragne          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ LIBFTDIR =	./libft
 LIBFT_INCLUDEDIR = $(LIBFTDIR)/includes
 LIBFT = $(LIBFTDIR)/libft.a
 
-SRCS =	main.c opts.c process_md5.c swap.c constants.c debug.c
+SRCS =	main.c opts.c process_md5.c process_sha256.c swap.c constants.c debug.c
 
 SRC	= $(addprefix $(SRCDIR)/, $(SRCS))
 DEP = $(addprefix $(INCLUDES)/,$(DEPS))
@@ -59,7 +59,6 @@ debug:
 
 $(NAME): $(LIBFT) $(OBJECTS) $(DEP)
 	$(CC) -o $(NAME) $(OBJECTS) $(LIBFT) $(LFLAGS) 
-	@echo "$(OK_COLOR)$(NAME) compiled with success$(EOC)"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES)
 	@mkdir -p $(OBJDIR)

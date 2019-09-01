@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/06 15:30:16 by niragne           #+#    #+#             */
-/*   Updated: 2019/08/17 13:47:42 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/01 14:17:21 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	print_usage(t_arg_parser *parser)
 	char	*shorts;
 
 	shorts = get_shorts(parser);
-	ft_dprintf(2, "Usage: %s [-%s] <object file> ...\n", parser->prog_name,
+	ft_dprintf(2, "Usage: %s command [-%s] [files...]\n", parser->prog_name,
 		shorts);
 	free(shorts);
 	i = 0;
@@ -56,4 +56,5 @@ void	print_usage(t_arg_parser *parser)
 		ft_dprintf(2, ": %s\n", parser->opts[i].description);
 		i++;
 	}
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 13:00:44 by niragne           #+#    #+#             */
-/*   Updated: 2019/08/30 16:54:46 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/01 14:20:35 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ void	set_memory_length(uint8_t *init_mem, size_t length, int size,
 	}
 }
 
-void	get_padded_message(char *s, t_md5 *m)
+void	get_padded_message(char *s, t_ssl_wrapper *wrapper)
 {
 	uint8_t *new;
 	size_t formatted_len;
 	size_t original_len;
-	
+	t_md5 *m = wrapper->u.md;
+
 	original_len = ft_strlen(s);
 	m->original_length = original_len;
 	formatted_len = align(original_len + sizeof(uint64_t), 64);
@@ -54,7 +55,7 @@ void	get_padded_message(char *s, t_md5 *m)
 	new[original_len] = 1 << 7;
 	ft_bzero(new + original_len + 1, formatted_len - original_len - 1);
 	set_memory_length(new + formatted_len - 8, original_len, 8, 1);
-	ft_printf("Size of message after padding: %u bits.\n", formatted_len * 8);
+	// ft_printf("Size of message after padding: %u bits.\n", formatted_len * 8);
 	//print_buff(new, formatted_len);
 	m->message = new;
 }
@@ -67,10 +68,12 @@ size_t	align(size_t x, size_t n)
 		return ((x + n - 1) & ~(n - 1));
 }
 
-void	process_md5(char *s)
+void	process_md5(char *s, t_ssl_wrapper *wrapper)
 {
-	t_md5	m;
-	get_padded_message(s, &m);
+	t_md5 m;
+	wrapper->u.md = &m;
+
+	get_padded_message(s, wrapper);
 
 	uint32_t h0 = 0x67452301;
 	uint32_t h1 = 0xEFCDAB89;
@@ -93,8 +96,8 @@ void	process_md5(char *s)
 	while (j < m.formatted_length / 64)
 	{
 		tmp = (uint32_t*)(m.message + (j * 64));
-		ft_printf("Block number %d:\n", j);
-		print_buff((uint8_t*)tmp, 64);
+		//ft_printf("Block number %d:\n", j);
+		//print_buff((uint8_t*)tmp, 64);
 		a = h0;
 		b = h1;
 		c = h2;
@@ -136,6 +139,12 @@ void	process_md5(char *s)
 		h2 += c;
 		h3 += d;
 	}
-	ft_printf("Processing MD5 on %s.\n", s);
+	if (!wrapper->flags->flag_q)
+	{
+		if (wrapper->flags->flag_s)
+			ft_printf("MD5 (\"%s\") = ", s);
+		else
+			ft_printf("MD5 (%s) = ", wrapper->file_name);
+	}
 	ft_printf("%08x%08x%08x%08x\n", swap_uint32(h0), swap_uint32(h1), swap_uint32(h2), swap_uint32(h3));
 }

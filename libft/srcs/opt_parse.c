@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 13:49:12 by niragne           #+#    #+#             */
-/*   Updated: 2019/08/30 12:58:37 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/01 14:03:56 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ void			process_opt(t_arg_parser *parser, void *flags)
 			else
 				parser->invalid(parser, flags);
 		}
-		lst = lst->next;
+		lst = parser->current_ptr->next;
 	}
 }
