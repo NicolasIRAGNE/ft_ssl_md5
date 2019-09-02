@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:34:30 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/01 14:24:18 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/02 14:21:46 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	flag_r(t_arg_parser *parser, void *flags)
 
 	wrapper = (t_ssl_wrapper*)flags;
 	wrapper->flags->flag_r = 1;
-	ft_printf("flag r\n");
 }
 
 void	flag_q(t_arg_parser *parser, void *flags)

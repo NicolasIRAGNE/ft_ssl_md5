@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:26:57 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/01 14:15:55 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/02 15:46:43 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	process_args(t_ssl_wrapper *wrapper, t_arg_parser *parser)
 			int fd = open(test->long_name, O_RDONLY);
 			if (fd >= 0)
 			{
-				char buffer[UINT16_MAX];
-				if ((read(fd, buffer, UINT16_MAX) > 0))
+				char buffer[1000000];
+				if ((read(fd, buffer, 1000000) > 0))
 				{
 					wrapper->flags->flag_s = 0;
 					wrapper->file_name = test->long_name;
@@ -73,6 +73,18 @@ void	process_args(t_ssl_wrapper *wrapper, t_arg_parser *parser)
 				perror(test->long_name);
 		}
 		lst = lst->next;
+	}
+}
+
+void	process_stdin(t_ssl_wrapper *wrapper)
+{
+	wrapper->flags->flag_q = 1;
+	char buffer[1000000];
+	if ((read(STDIN_FILENO, buffer, 1000000) > 0))
+	{
+		wrapper->flags->flag_s = 0;
+		wrapper->file_name = NULL;
+		wrapper->f(buffer, wrapper);
 	}
 }
 
@@ -90,5 +102,7 @@ int main(int ac, char **av)
 	process_command(&parser, av[1], &wrapper);
 	process_opt(&parser, &wrapper);
 	process_args(&wrapper, &parser);
+	if (parser.nb_args == 1)
+		process_stdin(&wrapper);
 	return (0);
 }
