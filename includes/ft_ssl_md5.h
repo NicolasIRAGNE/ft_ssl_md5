@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:27:14 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/02 16:15:44 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/04 16:17:21 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,13 @@
 #include <stdio.h>
 #include "libft.h"
 
-#define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
-#define RIGHTROTATE(x, c) (((x) >> (c)) | ((x) << (32 - (c))))
-
 typedef	struct	s_ssl_flags
 {
 	int	flag_s : 1;
 	int	flag_p : 1;
 	int	flag_q : 1;
 	int	flag_r : 1;
+	int	flag_v : 1;
 }				t_ssl_flags;
 
 typedef struct	s_md5
@@ -99,6 +97,7 @@ void	flag_s(t_arg_parser *parser, void *flags);
 void	flag_p(t_arg_parser *parser, void *flags);
 void	flag_q(t_arg_parser *parser, void *flags);
 void	flag_r(t_arg_parser *parser, void *flags);
+void	flag_v(t_arg_parser *parser, void *flags);
 void	flag_invalid(t_arg_parser *parser, void *flags);
 
 void	process_md5(char *s, t_ssl_wrapper *wrapper);
@@ -108,12 +107,16 @@ void	md5_48(t_md5 *m);
 void	md5_64(t_md5 *m);
 void	md5_print_result(char *s, t_ssl_wrapper *wrapper);
 void	process_sha256(char *s, t_ssl_wrapper *wrapper);
+void	sha256_print_result(char *s, t_ssl_wrapper *wrapper);
 size_t	align(size_t x, size_t n);
 uint64_t swap_uint64(uint64_t val);
 uint32_t swap_uint32(uint32_t val);
+void	swap_uint32_array(uint32_t *array, size_t len);
 void	print_buff(uint8_t *s, size_t len);
 void	set_memory_length(uint8_t *init_mem, size_t length, int size,
 											char is_little_endian);
+uint32_t	leftrotate(uint32_t x, size_t c);
+uint32_t	rightrotate(uint32_t x, size_t c);
 
 extern uint32_t g_sines[];
 extern uint32_t g_shifts[];

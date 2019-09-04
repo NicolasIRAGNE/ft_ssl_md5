@@ -6,7 +6,7 @@
 #    By: niragne <niragne@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/18 12:01:42 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/02 13:59:18 by niragne          ###   ########.fr        #
+#    Updated: 2019/09/04 16:00:50 by niragne          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ LIBFTDIR =	./libft
 LIBFT_INCLUDEDIR = $(LIBFTDIR)/includes
 LIBFT = $(LIBFTDIR)/libft.a
 
-SRCS =	main.c opts.c process_md5.c process_sha256.c swap.c constants.c debug.c md5_loops.c
+SRCS =	main.c opts.c process_md5.c process_sha256.c swap.c constants.c debug.c md5_loops.c rotate.c
 
 SRC	= $(addprefix $(SRCDIR)/, $(SRCS))
 DEP = $(addprefix $(INCLUDES)/,$(DEPS))

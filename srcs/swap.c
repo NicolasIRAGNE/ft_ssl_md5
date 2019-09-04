@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 13:33:42 by niragne           #+#    #+#             */
-/*   Updated: 2019/08/30 15:43:10 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/04 15:56:37 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,16 @@ uint64_t swap_uint64(uint64_t val)
 	val = ((val << 8) & 0xFF00FF00FF00FF00ULL) | ((val >> 8) & 0x00FF00FF00FF00FFULL);
 	val = ((val << 16) & 0xFFFF0000FFFF0000ULL) | ((val >> 16) & 0x0000FFFF0000FFFFULL);
 	return (val << 32) | (val >> 32);
+}
+
+void	swap_uint32_array(uint32_t *array, size_t len)
+{
+	size_t i;
+
+	i = 0;
+	while (i < len)
+	{
+		array[i] = swap_uint32(array[i]);
+		i++;
+	}
 }

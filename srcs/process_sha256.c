@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 13:17:46 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/02 17:01:03 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/04 16:19:47 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static const uint32_t k[] = {
     0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
     0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
-
 
 static void	get_padded_message(char *s, t_ssl_wrapper *wrapper)
 {
@@ -72,6 +71,19 @@ void	update_sha256(t_sha256 *sha)
 	sha->i = 0;
 }
 
+void	update_sha256_after_loop(t_sha256 *sha)
+{
+		sha->i = 16;
+		sha->h0 = sha->h0 + sha->a;
+		sha->h1 = sha->h1 + sha->b;
+		sha->h2 = sha->h2 + sha->c;
+		sha->h3 = sha->h3 + sha->d;
+		sha->h4 = sha->h4 + sha->e;
+		sha->h5 = sha->h5 + sha->f;
+		sha->h6 = sha->h6 + sha->g;
+		sha->h7 = sha->h7 + sha->h;
+}
+
 void	print_schedule(uint32_t *array)
 {
 	size_t i = 0;
@@ -86,6 +98,54 @@ void	print_schedule(uint32_t *array)
 	ft_printf("\n");
 }
 
+void	sha256_schedule(t_ssl_wrapper *wrapper, size_t j)
+{
+	t_sha256 *sha;
+
+	uint32_t s0;
+	uint32_t s1;
+	sha = wrapper->u.sha256;
+	sha->ptr = (uint32_t*)(sha->message + (j * 64));
+	swap_uint32_array(sha->ptr, 16);
+	ft_memcpy(sha->array, sha->ptr, 16 * sizeof(uint32_t));
+	while (sha->i < 64)
+	{
+		s0 = rightrotate(sha->array[sha->i - 15], 7)
+		^ rightrotate(sha->array[sha->i - 15], 18) ^ (sha->array[sha->i - 15] >> 3);
+		s1 = rightrotate(sha->array[sha->i - 2], 17)
+		^ rightrotate(sha->array[sha->i - 2], 19) ^ (sha->array[sha->i - 2] >> 10);
+		sha->array[sha->i] = sha->array[sha->i - 16] + s0 + sha->array[sha->i - 7] + s1;
+		sha->i++;
+	}
+	// print_schedule(sha->array);
+}
+
+void	sha256_loop(t_ssl_wrapper *wrapper)
+{
+	t_sha256 *sha;
+	
+	sha = wrapper->u.sha256;
+	while (sha->i < 64)
+		{
+			uint32_t S1 = rightrotate(sha->e, 6) ^ rightrotate(sha->e, 11) ^ rightrotate(sha->e, 25);
+			uint32_t ch = (sha->e & sha->f) ^ ((~sha->e) & sha->g);
+			uint32_t tmp1 = sha->h + S1 + ch + k[sha->i] + sha->array[sha->i];
+			uint32_t S0 = rightrotate(sha->a, 2) ^ rightrotate(sha->a, 13) ^ rightrotate(sha->a, 22);
+			uint32_t maj = (sha->a & sha->b) ^ (sha->a & sha->c) ^ (sha->b & sha->c);
+			uint32_t tmp2 = S0 + maj;
+			sha->h = sha->g;
+			sha->g = sha->f;
+			sha->f = sha->e;
+			sha->e = sha->d + tmp1;
+			sha->d = sha->c;
+			sha->c = sha->b;
+			sha->b = sha->a;
+			sha->a = tmp1 + tmp2;
+			// ft_printf("[%2d] A=%12u B=%12u C=%12u D=%12u E=%12u F=%12u G=%12u H=%12u\n", sha->i, sha->a, sha->b,sha->c,sha->d,sha->e,sha->f,sha->g,sha->h);
+			sha->i++;
+		}
+}
+
 void	process_sha256(char *s, t_ssl_wrapper *wrapper)
 {
 	t_sha256 sha;
@@ -93,57 +153,38 @@ void	process_sha256(char *s, t_ssl_wrapper *wrapper)
 	wrapper->u.sha256 = &sha;
 	init_sha256(&sha);
 	get_padded_message(s, wrapper);
-	print_buff(sha.message, 64);
 	size_t j = 0;
 
-	uint32_t s0;
-	uint32_t s1;
 	while (j < sha.formatted_length / 64)
 	{
-		sha.ptr = (uint32_t*)(sha.message + (j * 64));
-		ft_memcpy(sha.array, sha.ptr, 16 * sizeof(uint32_t));
-		while (sha.i < 64)
-		{
-			s0 = RIGHTROTATE(sha.array[sha.i - 15], 7) ^ RIGHTROTATE(sha.array[sha.i - 15], 18) ^ (sha.array[sha.i - 15] >> 3);
-			s1 = RIGHTROTATE(sha.array[sha.i - 2], 17) ^ RIGHTROTATE(sha.array[sha.i - 2], 19) ^ (sha.array[sha.i - 2] >> 10);
-			sha.array[sha.i] = sha.array[sha.i - 16] + s0 + sha.array[sha.i - 7] + s1;
-			sha.i++;
-		}
-		print_schedule(sha.array);
+		sha256_schedule(wrapper, j);
 		update_sha256(&sha);
-		while (sha.i < 64)
-		{
-			uint32_t S1 = RIGHTROTATE(sha.e, 6) ^ RIGHTROTATE(sha.e, 11) ^ RIGHTROTATE(sha.e, 25);
-			uint32_t ch = (sha.e & sha.f) ^ ((~sha.e) & sha.g);
-			uint32_t tmp1 = sha.h + S1 + ch + k[sha.i] + sha.array[sha.i];
-			uint32_t S0 = RIGHTROTATE(sha.a, 2) ^ RIGHTROTATE(sha.a, 13) ^ RIGHTROTATE(sha.a, 22);
-			uint32_t maj = (sha.a & sha.b) ^ (sha.a & sha.c) ^ (sha.b & sha.c);
-			uint32_t tmp2 = S0 + maj;
-			sha.h = sha.g;
-			sha.g = sha.f;
-			sha.f = sha.e;
-			sha.e = sha.d + tmp1;
-			sha.d = sha.c;
-			sha.c = sha.b;
-			sha.b = sha.a;
-			sha.a = tmp1 + tmp2;
-			ft_printf("[%2d] A=%12u B=%12u C=%12u D=%12u E=%12u F=%12u G=%12u H=%12u\n", sha.i, sha.a, sha.b,sha.c,sha.d,sha.e,sha.f,sha.g,sha.h);
-			sha.i++;
-		}
+		sha256_loop(wrapper);
+		update_sha256_after_loop(&sha);
 		j += 1;
-		sha.i = 16;
-		sha.h0 = sha.h0 + sha.a;
-		sha.h1 = sha.h1 + sha.b;
-		sha.h2 = sha.h2 + sha.c;
-		sha.h3 = sha.h3 + sha.d;
-		sha.h4 = sha.h4 + sha.e;
-		sha.h5 = sha.h5 + sha.f;
-		sha.h6 = sha.h6 + sha.g;
-		sha.h7 = sha.h7 + sha.h;
 	}
-	if (wrapper->flags->flag_s)
-		ft_printf("SHA256 (\"%s\") = ", s);
-	else
-		ft_printf("SHA256 (%s) = ", wrapper->file_name);
-	ft_printf("%08x%08x%08x%08x%08x%08x%08x%08x\n", sha.h0,sha.h1,sha.h2,sha.h3,sha.h4,sha.h5,sha.h6,sha.h7);
+	sha256_print_result(s, wrapper);
+}
+
+void	sha256_print_result(char *s, t_ssl_wrapper *wrapper)
+{
+	t_sha256 *sha;
+	sha = wrapper->u.sha256;
+	if (!wrapper->flags->flag_q && !wrapper->flags->flag_r)
+	{
+		if (wrapper->flags->flag_s)
+			ft_printf("SHA256 (\"%s\") = ", s);
+		else
+			ft_printf("SHA256 (%s) = ", wrapper->file_name);
+	}
+	ft_printf("%08x%08x%08x%08x%08x%08x%08x%08x", sha->h0, sha->h1, sha->h2, sha->h3
+		, sha->h4, sha->h5, sha->h6, sha->h7);
+	if (wrapper->flags->flag_r && !wrapper->flags->flag_q)
+	{
+		if (wrapper->flags->flag_s)
+			ft_printf(" \"%s\"", s);
+		else
+			ft_printf(" %s", wrapper->file_name);
+	}
+	ft_printf("\n");
 }

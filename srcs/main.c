@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:26:57 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/02 15:46:43 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/04 16:21:48 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ t_arg_option g_opts[] =
 		{"string", 's', flag_s, "Print a checksum of the given string."},
 		{NULL, 'p', flag_p, "Echo stdin to stdout and append the checksum to stdout."},
 		{"reverse", 'r', flag_r, "Reverses the format of the output.  This helps with visual diffs.  Does nothing when combined with the -ptx options."},
-		{"quiet", 'q', flag_q, "Quiet mode - only the checksum is printed out.  Overrides the -r option"}
+		{"quiet", 'q', flag_q, "Quiet mode - only the checksum is printed out.  Overrides the -r option"},
+		{"verbose", 'v', flag_v, "Verbose mode. Prints debug information."}
 };
 
 t_ssl_command g_commands[] =
@@ -68,6 +69,8 @@ void	process_args(t_ssl_wrapper *wrapper, t_arg_parser *parser)
 					wrapper->file_name = test->long_name;
 					wrapper->f(buffer, wrapper);
 				}
+				else
+					perror(test->long_name);
 			}
 			else
 				perror(test->long_name);

@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/02 13:46:29 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/02 14:05:39 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/04 16:01:37 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	md5_16(t_md5 *m)
 		swp = m->d;
 		m->d = m->c;
 		m->c = m->b;
-		m->b = m->b + LEFTROTATE((m->a + m->f + g_sines[m->i] + m->ptr[m->g]), g_shifts[m->i]);
+		m->b = m->b + leftrotate((m->a + m->f + g_sines[m->i] + m->ptr[m->g]), g_shifts[m->i]);
 		m->a = swp;
 		m->i++;
 	}
@@ -40,7 +40,7 @@ void	md5_32(t_md5 *m)
 		swp = m->d;
 		m->d = m->c;
 		m->c = m->b;
-		m->b = m->b + LEFTROTATE((m->a + m->f + g_sines[m->i] + m->ptr[m->g]), g_shifts[m->i]);
+		m->b = m->b + leftrotate((m->a + m->f + g_sines[m->i] + m->ptr[m->g]), g_shifts[m->i]);
 		m->a = swp;
 		m->i++;
 	}
@@ -57,7 +57,7 @@ void	md5_48(t_md5 *m)
 		swp = m->d;
 		m->d = m->c;
 		m->c = m->b;
-		m->b = m->b + LEFTROTATE((m->a + m->f + g_sines[m->i] + m->ptr[m->g]), g_shifts[m->i]);
+		m->b = m->b + leftrotate((m->a + m->f + g_sines[m->i] + m->ptr[m->g]), g_shifts[m->i]);
 		m->a = swp;
 		m->i++;
 	}
@@ -74,7 +74,7 @@ void	md5_64(t_md5 *m)
 		swp = m->d;
 		m->d = m->c;
 		m->c = m->b;
-		m->b = m->b + LEFTROTATE((m->a + m->f + g_sines[m->i] + m->ptr[m->g]), g_shifts[m->i]);
+		m->b = m->b + leftrotate((m->a + m->f + g_sines[m->i] + m->ptr[m->g]), g_shifts[m->i]);
 		m->a = swp;
 		m->i++;
 	}
