@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 13:17:46 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/04 16:19:47 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/06 15:18:02 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,4 +187,5 @@ void	sha256_print_result(char *s, t_ssl_wrapper *wrapper)
 			ft_printf(" %s", wrapper->file_name);
 	}
 	ft_printf("\n");
+	free(sha->message);
 }

@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:26:57 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/04 16:21:48 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/06 16:08:37 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	process_args(t_ssl_wrapper *wrapper, t_arg_parser *parser)
 {
 	t_list			*lst;
 	t_arg_parsed	*test;
+	char			*buf;
 
 	lst = parser->parsed->next;
 	while (lst)
@@ -59,21 +60,13 @@ void	process_args(t_ssl_wrapper *wrapper, t_arg_parser *parser)
 		parser->current_ptr = lst;
 		if (test->type == E_ARG)
 		{
-			int fd = open(test->long_name, O_RDONLY);
-			if (fd >= 0)
+			if ((buf = file_to_buffer(NULL, test->long_name)))
 			{
-				char buffer[1000000];
-				if ((read(fd, buffer, 1000000) > 0))
-				{
-					wrapper->flags->flag_s = 0;
-					wrapper->file_name = test->long_name;
-					wrapper->f(buffer, wrapper);
-				}
-				else
-					perror(test->long_name);
+				wrapper->flags->flag_s = 0;
+				wrapper->file_name = test->long_name;
+				wrapper->f(buf, wrapper);
+				free(buf);
 			}
-			else
-				perror(test->long_name);
 		}
 		lst = lst->next;
 	}
@@ -81,13 +74,15 @@ void	process_args(t_ssl_wrapper *wrapper, t_arg_parser *parser)
 
 void	process_stdin(t_ssl_wrapper *wrapper)
 {
+	char *buf;
+
 	wrapper->flags->flag_q = 1;
-	char buffer[1000000];
-	if ((read(STDIN_FILENO, buffer, 1000000) > 0))
+	if ((buf = stdin_to_buffer(NULL))) // TODO : ici ca marche pas
 	{
 		wrapper->flags->flag_s = 0;
 		wrapper->file_name = NULL;
-		wrapper->f(buffer, wrapper);
+		wrapper->f(buf, wrapper);
+		free(buf);
 	}
 }
 

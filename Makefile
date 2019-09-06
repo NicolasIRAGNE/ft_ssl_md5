@@ -6,7 +6,7 @@
 #    By: niragne <niragne@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/18 12:01:42 by ldedier           #+#    #+#              #
-#    Updated: 2019/09/04 16:00:50 by niragne          ###   ########.fr        #
+#    Updated: 2019/09/06 16:21:48 by niragne          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,9 @@ CFLAGS = -DARCH=\"$(UNAME)\" -Wall -Wextra -Werror
 ifeq ($(DEBUG), 1)
 	LFLAGS += -fsanitize=address
 	CFLAGS += -DDEBUG -fsanitize=address
-	CC += -g3
 endif
+
+	CC += -g3
 
 SRCDIR = srcs
 SPEED = -j8
@@ -41,7 +42,8 @@ LIBFTDIR =	./libft
 LIBFT_INCLUDEDIR = $(LIBFTDIR)/includes
 LIBFT = $(LIBFTDIR)/libft.a
 
-SRCS =	main.c opts.c process_md5.c process_sha256.c swap.c constants.c debug.c md5_loops.c rotate.c
+SRCS =	main.c opts.c opts_2.c process_md5.c process_sha256.c swap.c debug.c md5_loops.c rotate.c\
+		open_file.c
 
 SRC	= $(addprefix $(SRCDIR)/, $(SRCS))
 DEP = $(addprefix $(INCLUDES)/,$(DEPS))
@@ -66,10 +68,10 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDES)
 
 clean:
 	@make clean -C $(LIBFTDIR)
-	@rm -rf $(NAME)
+	@rm -rf $(OBJECTS)
 
 fclean: clean
 	@make fclean -C $(LIBFTDIR)
-	@rm -rf $(OBJECTS)
+	@rm -rf $(NAME)
 
 re: fclean all
