@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 14:30:01 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/09 15:27:19 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/09 16:37:05 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,7 @@ char	*file_to_buffer(t_ssl_wrapper *wrapper, char *name)
 	total_size = 0;
 	fd = open(name, O_RDONLY);
 	if (fd < 0)
-	{
-		perror(name);
 		return (NULL);
-	}
 	while ((rd = read(fd, buffer, BUFF_SIZE)) > 0)
 	{
 		ret = update_buffer(ret, buffer, total_size, rd);
@@ -55,11 +52,9 @@ char	*file_to_buffer(t_ssl_wrapper *wrapper, char *name)
 	}
 	close(fd);
 	if (rd < 0)
-	{
-		perror(name);
 		return (NULL);
-	}
-	ret[total_size] = 0;
+	if (ret)
+		ret[total_size] = 0;
 	wrapper->file_length = total_size;
 	return (ret);
 }
@@ -79,9 +74,8 @@ char	*stdin_to_buffer(t_ssl_wrapper *wrapper)
 		ret = update_buffer(ret, buffer, total_size, rd);
 		total_size += rd;
 	}
-	if (rd < 0)
+	if (rd < 0 || !ret)
 	{
-		perror("test");
 		return (NULL);
 	}
 	ret[total_size] = 0;

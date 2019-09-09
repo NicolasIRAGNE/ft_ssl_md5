@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:34:30 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/09 15:29:39 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/09 16:53:09 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	flag_p(t_arg_parser *parser, void *flags)
 	(void)parser;
 	wrapper = (t_ssl_wrapper*)flags;
 	wrapper->flags->flag_p = 1;
-	ft_printf("flag p\n");
+	process_stdin(wrapper);
 }
 
 void	flag_r(t_arg_parser *parser, void *flags)
@@ -66,5 +66,4 @@ void	flag_v(t_arg_parser *parser, void *flags)
 	(void)parser;
 	wrapper = (t_ssl_wrapper*)flags;
 	wrapper->flags->flag_v = 1;
-	ft_printf("%s\n", file_to_buffer(NULL, "Makefile"));
 }

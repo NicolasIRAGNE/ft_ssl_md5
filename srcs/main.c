@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:26:57 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/09 15:30:29 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/09 16:40:51 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,21 @@
 
 t_arg_option g_opts[] =
 {
-		{"string", 's', flag_s, "Print a checksum of the given string."},
-		{NULL, 'p', flag_p, "Echo stdin to stdout and append the checksum to stdout."},
-		{"reverse", 'r', flag_r, "Reverses the format of the output.  This helps with visual diffs.  Does nothing when combined with the -ptx options."},
-		{"quiet", 'q', flag_q, "Quiet mode - only the checksum is printed out.  Overrides the -r option"},
-		{"verbose", 'v', flag_v, "Verbose mode. Prints debug information."}
+	{"string", 's', flag_s, "Print a checksum of the given string."},
+	{NULL, 'p', flag_p, "Echo stdin to stdout and append the checksum"
+		"to stdout."},
+	{"reverse", 'r', flag_r, "Reverses the format of the output."
+		"  This helps with visual diffs."
+		"  Does nothing when combined with the -ptx options."},
+	{"quiet", 'q', flag_q, "Quiet mode - only the checksum is printed out."
+		"  Overrides the -r option"},
+	{"verbose", 'v', flag_v, "Verbose mode. Prints debug information."}
 };
 
 t_ssl_command g_commands[] =
 {
-		{"md5", process_md5, "md5 algorithm"},
-		{"sha256", process_sha256, "sha256 algorithm"}
+	{"md5", process_md5, "md5 algorithm"},
+	{"sha256", process_sha256, "sha256 algorithm"}
 };
 
 void	process_command(t_arg_parser *parser, char *s, t_ssl_wrapper *wrapper)
@@ -68,6 +72,8 @@ void	process_args(t_ssl_wrapper *wrapper, t_arg_parser *parser)
 				wrapper->f(buf, wrapper);
 				free(buf);
 			}
+			else
+				ssl_perror(test->long_name, parser);
 		}
 		lst = lst->next;
 	}
@@ -78,20 +84,19 @@ void	process_stdin(t_ssl_wrapper *wrapper)
 	char *buf;
 
 	wrapper->flags->flag_q = 1;
-	if ((buf = stdin_to_buffer(NULL)))
-	{
-		wrapper->flags->flag_s = 0;
-		wrapper->file_name = NULL;
-		wrapper->f(buf, wrapper);
-		free(buf);
-	}
+	buf = stdin_to_buffer(NULL);
+	wrapper->flags->flag_s = 0;
+	wrapper->file_name = NULL;
+	wrapper->f(buf, wrapper);
+	free(buf);
 }
 
-int main(int ac, char **av)
+int		main(int ac, char **av)
 {
-	t_arg_parser parser;
-	t_ssl_wrapper wrapper;
-	t_ssl_flags flags;
+	t_arg_parser	parser;
+	t_ssl_wrapper	wrapper;
+	t_ssl_flags		flags;
+
 	(void)ac;
 	opt_init_parser(&parser, flag_invalid, av[0]);
 	opt_add_to_parser(&parser, g_opts, sizeof(g_opts));
@@ -101,7 +106,7 @@ int main(int ac, char **av)
 	process_command(&parser, av[1], &wrapper);
 	process_opt(&parser, &wrapper);
 	process_args(&wrapper, &parser);
-	if (parser.nb_args == 1)
+	if (parser.nb_args == 1 && !flags.flag_p)
 		process_stdin(&wrapper);
 	return (0);
 }
