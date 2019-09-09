@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 14:30:01 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/06 16:09:06 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/09 15:27:19 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ char	*file_to_buffer(t_ssl_wrapper *wrapper, char *name)
 	int		rd;
 	int		fd;
 
-	(void)wrapper;
 	ret = NULL;
 	total_size = 0;
 	fd = open(name, O_RDONLY);
@@ -61,6 +60,7 @@ char	*file_to_buffer(t_ssl_wrapper *wrapper, char *name)
 		return (NULL);
 	}
 	ret[total_size] = 0;
+	wrapper->file_length = total_size;
 	return (ret);
 }
 

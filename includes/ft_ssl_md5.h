@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:27:14 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/06 16:08:30 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/09 15:29:04 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef	struct	s_ssl_flags
 	int	flag_q : 1;
 	int	flag_r : 1;
 	int	flag_v : 1;
+	int flag_isfile : 1;
 }				t_ssl_flags;
 
 typedef struct	s_md5
@@ -84,6 +85,7 @@ struct			s_ssl_wrapper
 {
 	t_ssl_flags		*flags;
 	char			*file_name;
+	size_t			file_length;
 	void			(*f)(char *s, t_ssl_wrapper *wrapper);
 	union {
 		t_md5		*md;

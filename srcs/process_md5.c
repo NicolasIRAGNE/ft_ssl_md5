@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 13:00:44 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/06 15:17:46 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/09 15:29:18 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ static void	get_padded_message(char *s, t_ssl_wrapper *wrapper)
 	size_t original_len;
 	t_md5 *m = wrapper->u.md;
 
-	original_len = ft_strlen(s);
+	if (!wrapper->flags->flag_isfile)
+		original_len = ft_strlen(s);
+	else
+		original_len = wrapper->file_length;
 	m->original_length = original_len;
 	formatted_len = align(original_len + sizeof(uint64_t), 64);
 	m->formatted_length = formatted_len;
@@ -90,8 +93,9 @@ void	process_md5(char *s, t_ssl_wrapper *wrapper)
 	while (j < m.formatted_length / 64)
 	{
 		m.ptr = (uint32_t*)(m.message + (j * 64));
-		//ft_printf("Block number %d:\n", j);
+		// ft_printf("Block number %d:\n", j);
 		// print_buff((uint8_t*)m.ptr, 64);
+		// ft_printf("\n");
 		m.a = m.h0;
 		m.b = m.h1;
 		m.c = m.h2;
