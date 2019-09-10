@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:05:39 by niragne           #+#    #+#             */
-/*   Updated: 2019/08/17 14:11:47 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 12:23:52 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	opt_add_to_parser(t_arg_parser *parser, t_arg_option *opt, size_t size)
 
 int		opt_add_arg(t_arg_parser *parser, t_arg_parsed opt)
 {
+	parser->nb_args++;
 	if (ft_add_to_list_back(&parser->parsed, (void*)&opt, sizeof(opt)))
 		return (1);
 	else

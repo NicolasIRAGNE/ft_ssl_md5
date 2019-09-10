@@ -6,7 +6,7 @@
 #    By: niragne <niragne@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/06 18:20:16 by ldedier           #+#    #+#              #
-#    Updated: 2019/08/17 14:14:30 by niragne          ###   ########.fr        #
+#    Updated: 2019/09/10 12:20:24 by niragne          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,11 +79,12 @@ INCLUDES = $(addprefix $(INCLUDESDIR)/, $(INCLUDES_NO_PREFIX))
 
 CFLAGS = -Wall -Wextra -Werror $(INC)
 
-ifeq ($(DEBUG), 1)
 	CFLAGS += -DDEBUG -fsanitize=address
 	LFLAGS += -fsanitize=address
 	CC += -g3
-endif
+
+debug:
+	make all DEBUG=1
 
 all: $(BINDIR)/$(NAME)
 

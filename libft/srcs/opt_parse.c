@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 13:49:12 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/01 14:03:56 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 12:22:03 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ t_arg_option	*find_opt_by_long(t_arg_parser *parser, char *str)
 	i = 0;
 	while (i * sizeof(t_arg_option) < parser->opts_size)
 	{
-		if (ft_strcmp(parser->opts[i].long_name, str + 2) == 0)
+		if (parser->opts[i].long_name != NULL
+			&& ft_strcmp(parser->opts[i].long_name, str + 2) == 0)
 		{
 			return (parser->opts + i);
 		}

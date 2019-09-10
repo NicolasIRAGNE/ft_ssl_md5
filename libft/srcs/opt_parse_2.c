@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/17 14:07:38 by niragne           #+#    #+#             */
-/*   Updated: 2019/08/17 14:08:12 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 12:23:47 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int		opt_parse_str(t_arg_parser *parser, char *str)
 	}
 	else
 	{
-		parser->nb_args++;
 		opt_add_arg(parser, (t_arg_parsed){0, str, E_ARG});
 	}
 	return (0);
