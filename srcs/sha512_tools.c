@@ -1,44 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sha256_tools.c                                     :+:      :+:    :+:   */
+/*   sha512_tools.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/09 17:21:36 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/10 11:09:00 by niragne          ###   ########.fr       */
+/*   Created: 2019/09/10 11:08:41 by niragne           #+#    #+#             */
+/*   Updated: 2019/09/10 11:09:31 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl_md5.h"
 
-void	init_sha224(t_sha224 *sha)
+void	init_sha512(t_sha512 *sha)
 {
-	sha->h0 = 0xc1059ed8;
-	sha->h1 = 0x367cd507;
-	sha->h2 = 0x3070dd17;
-	sha->h3 = 0xf70e5939;
-	sha->h4 = 0xffc00b31;
-	sha->h5 = 0x68581511;
-	sha->h6 = 0x64f98fa7;
-	sha->h7 = 0xbefa4fa4;
+	sha->h0 = 0x6a09e667f3bcc908;
+	sha->h1 = 0xbb67ae8584caa73b;
+	sha->h2 = 0x3c6ef372fe94f82b;
+	sha->h3 = 0xa54ff53a5f1d36f1;
+	sha->h4 = 0x510e527fade682d1;
+	sha->h5 = 0x9b05688c2b3e6c1f;
+	sha->h6 = 0x1f83d9abfb41bd6b;
+	sha->h7 = 0x5be0cd19137e2179;
 	sha->i = 16;
 }
 
-void	init_sha256(t_sha256 *sha)
-{
-	sha->h0 = 0x6a09e667;
-	sha->h1 = 0xbb67ae85;
-	sha->h2 = 0x3c6ef372;
-	sha->h3 = 0xa54ff53a;
-	sha->h4 = 0x510e527f;
-	sha->h5 = 0x9b05688c;
-	sha->h6 = 0x1f83d9ab;
-	sha->h7 = 0x5be0cd19;
-	sha->i = 16;
-}
-
-void	update_sha256(t_sha256 *sha)
+void	update_sha512(t_sha512 *sha)
 {
 	sha->a = sha->h0;
 	sha->b = sha->h1;
@@ -51,7 +38,7 @@ void	update_sha256(t_sha256 *sha)
 	sha->i = 0;
 }
 
-void	update_sha256_after_loop(t_sha256 *sha)
+void	update_sha512_after_loop(t_sha512 *sha)
 {
 	sha->i = 16;
 	sha->h0 = sha->h0 + sha->a;

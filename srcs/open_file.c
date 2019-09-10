@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/06 14:30:01 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/09 16:37:05 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 10:30:44 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ char	*stdin_to_buffer(t_ssl_wrapper *wrapper)
 		ret = update_buffer(ret, buffer, total_size, rd);
 		total_size += rd;
 	}
-	if (rd < 0 || !ret)
-	{
+	if (rd < 0)
 		return (NULL);
-	}
-	ret[total_size] = 0;
+	if (ret)
+		ret[total_size] = 0;
+	wrapper->file_length = total_size;
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 13:33:42 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/04 16:49:00 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 11:29:07 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ void		swap_uint32_array(uint32_t *array, size_t len)
 	while (i < len)
 	{
 		array[i] = swap_uint32(array[i]);
+		i++;
+	}
+}
+
+void		swap_uint64_array(uint64_t *array, size_t len)
+{
+	size_t i;
+
+	i = 0;
+	while (i < len)
+	{
+		array[i] = swap_uint64(array[i]);
 		i++;
 	}
 }

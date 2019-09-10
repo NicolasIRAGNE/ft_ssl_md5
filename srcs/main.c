@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:26:57 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/09 16:40:51 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 11:00:13 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ t_arg_option g_opts[] =
 t_ssl_command g_commands[] =
 {
 	{"md5", process_md5, "md5 algorithm"},
-	{"sha256", process_sha256, "sha256 algorithm"}
+	{"sha256", process_sha256, "sha256 algorithm"},
+	{"sha224", process_sha224, "sha256 algorithm"},
+	{"sha512", process_sha512, "sha256 algorithm"}
 };
 
 void	process_command(t_arg_parser *parser, char *s, t_ssl_wrapper *wrapper)
@@ -84,7 +86,8 @@ void	process_stdin(t_ssl_wrapper *wrapper)
 	char *buf;
 
 	wrapper->flags->flag_q = 1;
-	buf = stdin_to_buffer(NULL);
+	buf = stdin_to_buffer(wrapper);
+	wrapper->flags->flag_isfile = 1;
 	wrapper->flags->flag_s = 0;
 	wrapper->file_name = NULL;
 	wrapper->f(buf, wrapper);
