@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   process_sha512.c                                   :+:      :+:    :+:   */
+/*   process_sha384.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 13:17:46 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/10 11:57:16 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 12:05:20 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static void		get_padded_message(char *s, t_ssl_wrapper *wrapper)
 	uint8_t		*new;
 	size_t		formatted_len;
 	size_t		original_len;
-	t_sha512	*m;
+	t_sha384	*m;
 
-	m = wrapper->u.sha512;
+	m = wrapper->u.sha384;
 	if (!wrapper->flags->flag_isfile && s)
 		original_len = ft_strlen(s);
 	else
@@ -74,13 +74,13 @@ static void		get_padded_message(char *s, t_ssl_wrapper *wrapper)
 	m->message = new;
 }
 
-void			sha512_schedule(t_ssl_wrapper *wrapper, size_t j)
+void			sha384_schedule(t_ssl_wrapper *wrapper, size_t j)
 {
-	t_sha512	*sha;
+	t_sha384	*sha;
 	uint64_t	s0;
 	uint64_t	s1;
 
-	sha = wrapper->u.sha512;
+	sha = wrapper->u.sha384;
 	sha->ptr = (uint64_t*)(sha->message + (j * 128));
 	swap_uint64_array(sha->ptr, 16);
 	ft_memcpy(sha->array, sha->ptr, 16 * sizeof(uint64_t));
@@ -98,11 +98,11 @@ void			sha512_schedule(t_ssl_wrapper *wrapper, size_t j)
 		print_schedule_64(sha->array);
 }
 
-void			sha512_loop(t_ssl_wrapper *wrapper)
+void			sha384_loop(t_ssl_wrapper *wrapper)
 {
-	t_sha512	*sha;
+	t_sha384	*sha;
 
-	sha = wrapper->u.sha512;
+	sha = wrapper->u.sha384;
 	while (sha->i < 80)
 	{
 		sha->s1 = rightrotate64(sha->e, 14) ^ rightrotate64(sha->e, 18)
@@ -126,42 +126,42 @@ void			sha512_loop(t_ssl_wrapper *wrapper)
 	}
 }
 
-void			process_sha512(char *s, t_ssl_wrapper *wrapper)
+void			process_sha384(char *s, t_ssl_wrapper *wrapper)
 {
-	t_sha512	sha;
+	t_sha384	sha;
 	size_t		j;
 
 	j = 0;
-	wrapper->u.sha512 = &sha;
-	init_sha512(&sha);
+	wrapper->u.sha384 = &sha;
+	init_sha384(&sha);
 	get_padded_message(s, wrapper);
 	while (j < sha.formatted_length / 128)
 	{
-		sha512_schedule(wrapper, j);
-		update_sha512(&sha);
-		sha512_loop(wrapper);
-		update_sha512_after_loop(&sha);
+		sha384_schedule(wrapper, j);
+		update_sha512((t_sha512*)&sha);
+		sha384_loop(wrapper);
+		update_sha512_after_loop((t_sha512*)&sha);
 		j += 1;
 	}
-	sha512_print_result(s, wrapper);
+	sha384_print_result(s, wrapper);
 }
 
-void			sha512_print_result(char *s, t_ssl_wrapper *wrapper)
+void			sha384_print_result(char *s, t_ssl_wrapper *wrapper)
 {
-	t_sha512 *sha;
+	t_sha384 *sha;
 
-	sha = wrapper->u.sha512;
+	sha = wrapper->u.sha384;
 	if (wrapper->flags->flag_p && s)
 		ft_printf("%s", s);
 	if (!wrapper->flags->flag_q && !wrapper->flags->flag_r)
 	{
 		if (wrapper->flags->flag_s)
-			ft_printf("SHA512 (\"%s\") = ", s);
+			ft_printf("SHA384 (\"%s\") = ", s);
 		else
-			ft_printf("SHA512 (%s) = ", wrapper->file_name);
+			ft_printf("SHA384 (%s) = ", wrapper->file_name);
 	}
-	ft_printf("%016lx%016lx%016lx%016lx%016lx%016lx%016lx%016lx", sha->h0,
-		sha->h1, sha->h2, sha->h3, sha->h4, sha->h5, sha->h6, sha->h7);
+	ft_printf("%016lx%016lx%016lx%016lx%016lx%016lx", sha->h0,
+		sha->h1, sha->h2, sha->h3, sha->h4, sha->h5);
 	if (wrapper->flags->flag_r && !wrapper->flags->flag_q)
 	{
 		if (wrapper->flags->flag_s)

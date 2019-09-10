@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 11:08:41 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/10 11:09:31 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 12:03:03 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ void	init_sha512(t_sha512 *sha)
 	sha->h5 = 0x9b05688c2b3e6c1f;
 	sha->h6 = 0x1f83d9abfb41bd6b;
 	sha->h7 = 0x5be0cd19137e2179;
+	sha->i = 16;
+}
+
+void	init_sha384(t_sha384 *sha)
+{
+	sha->h0 = 0xcbbb9d5dc1059ed8;
+	sha->h1 = 0x629a292a367cd507;
+	sha->h2 = 0x9159015a3070dd17;
+	sha->h3 = 0x152fecd8f70e5939;
+	sha->h4 = 0x67332667ffc00b31;
+	sha->h5 = 0x8eb44a8768581511;
+	sha->h6 = 0xdb0c2e0d64f98fa7;
+	sha->h7 = 0x47b5481dbefa4fa4;
 	sha->i = 16;
 }
 

@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:27:14 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/10 11:35:21 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 12:06:02 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,38 @@ typedef struct		s_sha512
 	uint64_t		array[80];
 }					t_sha512;
 
+typedef struct		s_sha384
+{
+	size_t			original_length;
+	size_t			formatted_length;
+	size_t			i;
+	uint8_t			*message;
+	uint64_t		*ptr;
+	uint64_t		h0;
+	uint64_t		h1;
+	uint64_t		h2;
+	uint64_t		h3;
+	uint64_t		h4;
+	uint64_t		h5;
+	uint64_t		h6;
+	uint64_t		h7;
+	uint64_t		a;
+	uint64_t		b;
+	uint64_t		c;
+	uint64_t		d;
+	uint64_t		e;
+	uint64_t		f;
+	uint64_t		g;
+	uint64_t		h;
+	uint64_t		s1;
+	uint64_t		ch;
+	uint64_t		tmp1;
+	uint64_t		s0;
+	uint64_t		maj;
+	uint64_t		tmp2;
+	uint64_t		array[80];
+}					t_sha384;
+
 typedef struct s_ssl_wrapper	t_ssl_wrapper;
 
 typedef struct		s_ssl_command
@@ -157,6 +189,7 @@ typedef union		u_ssl_union
 	t_sha256		*sha256;
 	t_sha224		*sha224;
 	t_sha512		*sha512;
+	t_sha384		*sha384;
 }					t_ssl_union;
 
 struct				s_ssl_wrapper
@@ -183,9 +216,11 @@ void				md5_full(t_md5 *m);
 void				md5_print_result(char *s, t_ssl_wrapper *wrapper);
 void				process_sha256(char *s, t_ssl_wrapper *wrapper);
 void				process_sha224(char *s, t_ssl_wrapper *wrapper);
+void				process_sha384(char *s, t_ssl_wrapper *wrapper);
 void				process_sha512(char *s, t_ssl_wrapper *wrapper);
 void				sha256_print_result(char *s, t_ssl_wrapper *wrapper);
 void				sha224_print_result(char *s, t_ssl_wrapper *wrapper);
+void				sha384_print_result(char *s, t_ssl_wrapper *wrapper);
 void				sha512_print_result(char *s, t_ssl_wrapper *wrapper);
 size_t				align(size_t x, size_t n);
 uint64_t			swap_uint64(uint64_t val);
@@ -209,6 +244,7 @@ void				print_schedule_64(uint64_t *array);
 void				init_sha224(t_sha224 *sha);
 void				init_sha256(t_sha256 *sha);
 void				init_sha512(t_sha512 *sha);
+void				init_sha384(t_sha384 *sha);
 void				update_sha256(t_sha256 *sha);
 void				update_sha256_after_loop(t_sha256 *sha);
 void				init_sha512(t_sha512 *sha);

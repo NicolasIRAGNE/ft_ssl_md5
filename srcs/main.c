@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:26:57 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/10 11:00:13 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 12:10:42 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_ssl_command g_commands[] =
 	{"md5", process_md5, "md5 algorithm"},
 	{"sha256", process_sha256, "sha256 algorithm"},
 	{"sha224", process_sha224, "sha256 algorithm"},
+	{"sha384", process_sha384, "sha384 algorithm"},
 	{"sha512", process_sha512, "sha256 algorithm"}
 };
 
@@ -105,6 +106,7 @@ int		main(int ac, char **av)
 	opt_add_to_parser(&parser, g_opts, sizeof(g_opts));
 	opt_parse_args(&parser, av + 1);
 	ft_bzero(&wrapper, sizeof(wrapper));
+	ft_bzero(&flags, sizeof(flags));
 	wrapper.flags = &flags;
 	process_command(&parser, av[1], &wrapper);
 	process_opt(&parser, &wrapper);
