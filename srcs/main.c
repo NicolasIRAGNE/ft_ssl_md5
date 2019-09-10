@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/30 12:26:57 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/10 12:13:27 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 13:50:49 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,21 @@ void	process_stdin(t_ssl_wrapper *wrapper)
 	free(buf);
 }
 
+void	del(t_list *lst)
+{
+	t_list	*ptr;
+	void	*content;
+
+	while (lst)
+	{
+		ptr = lst;
+		content = lst->content;
+		lst = lst->next;
+		free(ptr);
+		free(content);
+	}
+}
+
 int		main(int ac, char **av)
 {
 	t_arg_parser	parser;
@@ -113,5 +128,6 @@ int		main(int ac, char **av)
 	process_args(&wrapper, &parser);
 	if (parser.nb_args == 1 && !flags.flag_p)
 		process_stdin(&wrapper);
+	del(parser.parsed);
 	return (0);
 }

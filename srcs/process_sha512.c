@@ -6,7 +6,7 @@
 /*   By: niragne <niragne@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/01 13:17:46 by niragne           #+#    #+#             */
-/*   Updated: 2019/09/10 11:57:16 by niragne          ###   ########.fr       */
+/*   Updated: 2019/09/10 13:49:00 by niragne          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void		get_padded_message(char *s, t_ssl_wrapper *wrapper)
 	else
 		original_len = wrapper->file_length;
 	m->original_length = original_len;
-	formatted_len = align(original_len + sizeof(uint64_t), 128);
+	formatted_len = align(original_len + sizeof(uint64_t) + 9, 128);
 	m->formatted_length = formatted_len;
 	if (!(new = malloc(formatted_len)))
 		exit(EXIT_FAILURE);
